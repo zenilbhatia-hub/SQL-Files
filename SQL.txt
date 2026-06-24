@@ -1,0 +1,166 @@
+=>Section A: Concept Application:-
+
+1. What is the functional difference between SELECT * and specifying column names, and when is each preferred?
+Answer:-
+-SELECT * fetches all data from a table. AND
+-Specifying column names retrieves only the required columns.
+
+2. Which keyword renames a column in the output, and does this alias change the actual table structure in the database?
+Answer:-
+-The AS keyword is used to rename a column in the output.
+-For e.g..:- SELECT Sales AS Total_Sales FROM Orders;
+
+3. Why does wrapping a numeric value in quotes (e.g., '5000') in a WHERE clause create a data type conflict in SQL?
+Answer:-
+-Values inside quotes are treated as strings (text), while numeric columns store numbers. This can cause data type conversion issues or incorrect comparisons.
+
+4. Contrast the results of ORDER BY Profit DESC versus ASC when the goal is to identify the top 10 most profitable orders.
+Answer:-
+-ORDER BY Profit DESC sorts records from highest profit to lowest profit.
+-ORDER BY Profit ASC sorts records from lowest profit to highest profit.
+-To find the top 10 most profitable orders, use ORDER BY Profit DESC.
+
+5. What is the T-SQL equivalent of the LIMIT clause in MS SQL Server, and why does syntax vary across SQL engines?
+Answer:-
+-In MS SQL Server, the equivalent of LIMIT is TOP.
+-SELECT TOP 10 * FROM Orders;
+6. Explain the logical execution order of a query containing SELECT, WHERE, ORDER BY, and LIMIT clauses
+Answer:-
+-FROM – Selects the table.
+-WHERE – Filters the rows.
+-SELECT – Chooses the required columns.
+-ORDER BY – Sorts the data.
+-LIMIT – Returns the specified number of rows.
+
+=>Section B: Practical Task
+Database Name:- use assessments
+
+1. Execute a query to retrieve the first 20 records from the orders table to verify data ingestion
+SELECT *
+FROM superstore
+LIMIT 20;
+
+2. Select Order ID, Order Date, Sales, and Profit, applying a column alias to display Sales as Total_Sales.
+SELECT 
+	Order_ID,
+    	Order_Date,
+    	Sales as Total_Sales,
+    	Profit
+FROM superstore
+
+3. Filter the dataset to isolate all high-value transactions where the Sales figure exceeds 5000.
+
+select *
+FROM superstore 
+where sales > 5000
+
+4. Generate a report of the top 10 most profitable orders by sorting the records by Profit in descending order.
+
+select * 
+from superstore
+order by profit desc
+limit 10
+
+=>Section C: Mini Project
+
+Problem Statement: 
+Identify underperforming product categories and regions
+by analyzing the relationship between discount rates and net profit margins.
+
+Q1. Which product category is underperforming based on total profit?
+
+select 
+	Category,
+	sum(Profit) as Profit
+from superstore
+group by Category
+order by Profit asc
+
+Q2. Which region is underperforming based on total profit?
+
+select top 1
+	Region,
+	sum(profit) as Profit
+from superstore
+group by Region
+ORDER BY Profit ASC
+
+Q3. What is the relationship between discount rates and profit margins?
+
+SELECT 
+	Category,
+	AVG(Discount) AS Avg_Discount,
+	SUM(Profit) AS Total_Profit
+FROM superstore
+GROUP BY Category;
+
+Q4. Which transactions are loss-making?
+
+SELECT
+    Order_ID,
+    Sales,
+    Discount,
+    Profit
+FROM superstore
+WHERE Profit < 0;
+
+Required Deliverables: 
+SQL script for database schema creation, multi-condition filtering queries, aggregated performance report by region, and a summary of loss-making transactions.
+
+Q1. Multi-Condition Filtering Queries
+SELECT *
+FROM superstore
+WHERE Discount > 0.20
+AND Profit < 0;
+
+Q2. Aggregated Performance Report by Region
+SELECT
+    Region,
+    SUM(Sales) AS Total_Sales,
+    SUM(Profit) AS Total_Profit,
+    AVG(Discount) AS Avg_Discount
+FROM superstore
+GROUP BY Region;
+
+Q3. Summary of Loss-Making Transactions
+SELECT
+    COUNT(*) AS Loss_Orders,
+    SUM(Profit) AS Total_Loss
+FROM superstore
+WHERE Profit < 0;
+
+Q4. Which product categories have the highest average discount rates?
+
+SELECT TOP 1
+    Category,
+    AVG(Discount) AS Avg_Discount
+FROM superstore
+GROUP BY Category
+ORDER BY Avg_Discount DESC;
+
+Q5. Which region offers the highest average discount?
+select top 1
+    Region,
+    avg(Discount) as Discount
+from superstore
+group by Region
+order by Discount desc
+
+Q6. Which category has the highest number of loss-making transactions?
+
+SELECT TOP 1
+    Category,
+    count(*) AS Loss_Transactions
+FROM superstore
+WHERE Profit < 0
+GROUP BY Category
+ORDER BY Loss_Transactions DESC;
+
+Q7. Which region has the highest number of loss-making transactions?
+select top 1
+    Region,
+    count(Profit) as profit
+from superstore
+where Profit < 0
+group by Region
+order by profit desc
