@@ -1,0 +1,21 @@
+Differences between MySQL and PostgreSQL
+
+1. Performance:-
+
+MySQL: Faster for simple web applications and basic read/write operations.
+PostgreSQL: Better for complex queries and large transactional systems.
+
+2. Advanced Features:-
+
+MySQL: Supports standard SQL features.
+PostgreSQL: Supports advanced features such as Window Functions, CTEs, JSONB, and custom data types.
+
+3. Use Cases:-
+
+MySQL: Commonly used for websites, blogs, e-commerce, and content management systems.
+PostgreSQL: Commonly used for enterprise applications, banking systems, analytics, and geospatial applications.
+
+Examples:-
+
+MySQL: Facebook
+PostgreSQL: Instagram
